@@ -1,0 +1,32 @@
+name: Generate GitHub Snake Grid
+
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+  generate_snake_grid:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Generate snake grid graphics
+      uses: Platane/snk@v2
+      with:
+        github_user_name: ${{ github.repository_owner }}
+        outputs: |
+          dist/github-snake.svg
+          dist/github-snake-dark.svg?palette=github-dark
+          dist/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
+
+    - name: Commit and push changes
+      uses: actions/github-script@0.9.0
+      with:
+        script: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add dist
+          git commit -m "Generate snake grid graphics"
+          git push origin main
