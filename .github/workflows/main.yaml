@@ -1,0 +1,23 @@
+name: Generate Snake Grid
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Generate Snake Grid
+      uses: Platane/snk@v2
+      with:
+        github_user_name: ${{ github.repository_owner }}
+        outputs: |
+          resource/img/github-snake.svg
+          resource/img/github-snake-dark.svg?palette=github-dark
+          resource/img/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
